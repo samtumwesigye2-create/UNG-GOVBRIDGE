@@ -1,0 +1,16 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "$id":"urn:ung:govbridge:transaction:v1",
+ "title":"GOVBRIDGE Portable Transaction Envelope",
+ "type":"object",
+ "required":["transaction_id","source","destination","schema_version","payload"],
+ "properties":{
+  "transaction_id":{"type":"string","minLength":1},
+  "source":{"type":"string","minLength":1},
+  "destination":{"type":"string","minLength":1},
+  "schema_version":{"const":"1.0"},
+  "payload":{"type":"object"},
+  "classification":{"type":"string","default":"INTERNAL"}
+ },
+ "additionalProperties":false
+}
