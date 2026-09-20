@@ -1,5 +1,6 @@
 import os
-from fastapi import FastAPI\nfrom fastapi.responses import HTMLResponse
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 SYSTEM="UNG-GOVBRIDGE"
 VERSION="0.1.0"
