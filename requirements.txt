@@ -1,3 +1,4 @@
 fastapi==0.116.1
 uvicorn[standard]==0.35.0
-httpx==0.28.1\npytest==8.4.2\n
+httpx==0.28.1
+pytest==8.4.2
