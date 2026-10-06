@@ -38,3 +38,13 @@ def test_job_rejects_anonymous():
 
 def test_unknown_adapter_requires_auth_first():
  assert c.post("/v1/jobs",json={"adapter":"missing","payload":{}}).status_code==401
+
+def test_production_rejects_ephemeral_state_db(monkeypatch):
+ monkeypatch.setenv("GOVBRIDGE_ENV", "production")
+ monkeypatch.setenv("STATE_DB", "/tmp/govbridge.db")
+ try:
+  app.validate_storage_config()
+ except RuntimeError as exc:
+  assert "STATE_DB" in str(exc)
+ else:
+  raise AssertionError("production must reject /tmp state database")
