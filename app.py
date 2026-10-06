@@ -7,6 +7,18 @@ from pydantic import BaseModel
 SYSTEM="UNG-GOVBRIDGE"; VERSION="0.2.0"
 app=FastAPI(title=SYSTEM,version=VERSION)
 DB=os.getenv("STATE_DB","/tmp/govbridge.db")
+
+def validate_storage_config():
+ env=os.getenv("GOVBRIDGE_ENV", "development").strip().lower()
+ state_db=os.getenv("STATE_DB", "/tmp/govbridge.db").strip()
+ if env in {"production", "prod"}:
+  if not os.getenv("STATE_DB", "").strip() or state_db.startswith("/tmp/") or not os.path.isabs(state_db):
+   raise RuntimeError("production requires STATE_DB on persistent mounted storage (absolute path outside /tmp)")
+ return state_db
+
+if os.getenv("GOVBRIDGE_ENV", "development").strip().lower() in {"production", "prod"}:
+ DB=validate_storage_config()
+
 JANUS=os.getenv("JANUS_BASE_URL","https://ung-iam-production.up.railway.app").rstrip("/")
 DEPS={"janus":JANUS,"nexus":os.getenv("NEXUS_BASE_URL","").rstrip("/"),"pulsar":os.getenv("PULSAR_BASE_URL","").rstrip("/"),"vault":os.getenv("VAULT_BASE_URL","").rstrip("/")}
 
